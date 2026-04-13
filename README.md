@@ -22,18 +22,19 @@ Assets:
 - `healing_status_efficientnet_b1_best.pt`
 - `infection_risk_binary_efficientnet_b1_best.pt`
 
-### Setup after clone
+### What teammates do
 
-1. Clone this repo.
-2. Create the checkpoints folder and copy both `.pt` files into it:
-
-   `wound_backend/outputs/checkpoints/`
-
-3. Install dependencies (example; match your Python + CUDA if you use GPU):
+1. **Clone** this repo: `git clone https://github.com/nlevy021-ux/HeAI.git` then `cd HeAI`.
+2. **Weights:** From the [release](https://github.com/nlevy021-ux/HeAI/releases/tag/v1.0.0-baseline), download both `.pt` files into `wound_backend/outputs/checkpoints/` (create the folder if needed).
+3. **Dependencies:** From the repo root:
 
    ```bash
-   pip install torch torchvision pillow pyyaml
+   python -m pip install -r requirements.txt
    ```
+
+   For GPU PyTorch, install `torch` / `torchvision` from [pytorch.org](https://pytorch.org/) instead of relying on the default CPU wheels.
+
+4. **Run inference** (commands below).
 
 ### Run inference on one image
 

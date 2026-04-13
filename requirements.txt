@@ -1,0 +1,10 @@
+# Inference + baseline training (CPU or GPU; install torch per https://pytorch.org/ if you need CUDA)
+torch>=2.0
+torchvision>=0.15
+Pillow>=9.0
+PyYAML>=6.0
+
+# Data pipeline and training (optional; only if building datasets / training)
+pandas>=2.0
+scikit-learn>=1.3
+datasets>=2.14
