@@ -1,0 +1,24 @@
+run_name: healing_status_efficientnet_b1
+model:
+  name: efficientnet_b1
+  pretrained: true
+data:
+  image_size: 240
+  num_workers: 0
+  batch_size: 16
+train:
+  seed: 42
+  epochs: 40
+  lr: 0.0003
+  weight_decay: 0.0001
+  early_stopping_patience: 8
+  monitor_metric: macro_f1
+  monitor_mode: max
+  use_class_weights: true
+augment:
+  random_resized_crop_scale_min: 0.8
+  horizontal_flip_prob: 0.5
+  color_jitter_brightness: 0.2
+  color_jitter_contrast: 0.2
+  color_jitter_saturation: 0.15
+  color_jitter_hue: 0.02

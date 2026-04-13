@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Large data/artifacts
+data/raw/
+data/processed/
+data/splits/
+data/metadata/
+outputs/
+images/
+
+wound_backend/data/raw/
+wound_backend/data/processed/
+wound_backend/data/splits/
+wound_backend/data/metadata/
+wound_backend/outputs/
+
+# Model artifacts
+*.pt
+*.pth
+*.onnx
+*.ckpt

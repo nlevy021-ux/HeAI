@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WoundAssessmentResponse",
+  "type": "object",
+  "required": [
+    "healing_status",
+    "erythema",
+    "edema",
+    "infection_risk_binary",
+    "needs_evaluation_binary",
+    "app_state",
+    "confidence",
+    "reason_flags"
+  ],
+  "properties": {
+    "healing_status": {
+      "type": "string"
+    },
+    "erythema": {
+      "type": "string"
+    },
+    "edema": {
+      "type": "string"
+    },
+    "infection_risk_binary": {
+      "type": "string",
+      "enum": [
+        "low",
+        "elevated"
+      ]
+    },
+    "needs_evaluation_binary": {
+      "type": "boolean"
+    },
+    "app_state": {
+      "type": "string",
+      "enum": [
+        "on_track",
+        "watch_closely",
+        "alert_doctor"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "reason_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
