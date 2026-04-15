@@ -1,0 +1,79 @@
+{
+  "name": "PatientProfile",
+  "type": "object",
+  "properties": {
+    "surgery_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Surgery Date"
+    },
+    "surgery_type": {
+      "type": "string",
+      "title": "Surgery Type"
+    },
+    "surgeon_name": {
+      "type": "string",
+      "title": "Surgeon Name"
+    },
+    "data_source": {
+      "type": "string",
+      "enum": [
+        "manual",
+        "synced"
+      ],
+      "title": "Data Source"
+    },
+    "closure_methods": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Wound Closure Methods"
+    },
+    "taking_medications": {
+      "type": "boolean",
+      "title": "Taking Antibiotics or Blood Thinners"
+    },
+    "medications_list": {
+      "type": "string",
+      "title": "Medications List"
+    },
+    "checkin_frequency": {
+      "type": "string",
+      "enum": [
+        "daily",
+        "every_2_days",
+        "as_needed"
+      ],
+      "title": "Check-in Frequency"
+    },
+    "baseline_photo": {
+      "type": "string",
+      "title": "Baseline Photo URL"
+    },
+    "baseline_pain": {
+      "type": "number",
+      "title": "Baseline Pain Level"
+    },
+    "baseline_warm": {
+      "type": "boolean",
+      "title": "Baseline Warm to Touch"
+    },
+    "onboarding_complete": {
+      "type": "boolean",
+      "title": "Onboarding Complete"
+    },
+    "care_team_phone": {
+      "type": "string",
+      "title": "Care Team Phone"
+    },
+    "care_team_email": {
+      "type": "string",
+      "title": "Care Team Email"
+    }
+  },
+  "required": [
+    "surgery_date",
+    "surgery_type"
+  ]
+}

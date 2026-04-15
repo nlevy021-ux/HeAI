@@ -1,0 +1,51 @@
+{
+  "name": "WoundCheckIn",
+  "type": "object",
+  "properties": {
+    "profile_id": {
+      "type": "string",
+      "title": "Patient Profile ID"
+    },
+    "photo_url": {
+      "type": "string",
+      "title": "Wound Photo URL"
+    },
+    "pain_level": {
+      "type": "number",
+      "title": "Pain Level (1-10)"
+    },
+    "warm_to_touch": {
+      "type": "boolean",
+      "title": "Warm to Touch"
+    },
+    "day_number": {
+      "type": "number",
+      "title": "Recovery Day Number"
+    },
+    "ai_result": {
+      "type": "string",
+      "enum": [
+        "normal",
+        "monitor",
+        "at_risk"
+      ],
+      "title": "AI Assessment Result"
+    },
+    "ai_summary": {
+      "type": "string",
+      "title": "AI Summary Text"
+    },
+    "contacted_care_team": {
+      "type": "boolean",
+      "title": "Contacted Care Team"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Additional Notes"
+    }
+  },
+  "required": [
+    "photo_url",
+    "pain_level"
+  ]
+}

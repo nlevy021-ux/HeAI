@@ -11,6 +11,11 @@ venv/
 .venv/
 env/
 
+# Frontend dependencies/build artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
 # OS/editor
 .DS_Store
 Thumbs.db
