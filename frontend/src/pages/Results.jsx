@@ -29,6 +29,10 @@ export default function Results() {
         result={result.result}
         summary={result.summary}
         dayNumber={result.dayNumber}
+        aiConfidence={result.aiConfidence}
+        adjustedConfidence={result.adjustedConfidence}
+        surveyConfidence={result.surveyConfidence}
+        confidenceAgreement={result.agreement}
         onAcknowledge={() => null}
         onContactCareTeam={() => window.alert('Please call your care team.')}
         careTeamPhone="+1 555 010 201"

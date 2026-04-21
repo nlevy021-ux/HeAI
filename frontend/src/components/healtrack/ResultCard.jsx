@@ -29,7 +29,23 @@ const RESULTS = {
   },
 };
 
-export default function ResultCard({ result, dayNumber, summary, onContactCareTeam, onAcknowledge, careTeamPhone }) {
+function toPercent(value) {
+  if (typeof value !== 'number') return null;
+  return `${Math.round(value * 100)}%`;
+}
+
+export default function ResultCard({
+  result,
+  dayNumber,
+  summary,
+  onContactCareTeam,
+  onAcknowledge,
+  careTeamPhone,
+  aiConfidence,
+  adjustedConfidence,
+  surveyConfidence,
+  confidenceAgreement,
+}) {
   const config = RESULTS[result] || RESULTS.normal;
   const Icon = config.icon;
 
@@ -53,6 +69,22 @@ export default function ResultCard({ result, dayNumber, summary, onContactCareTe
       </div>
 
       <p className="text-sm text-foreground leading-relaxed mb-4">{summary}</p>
+
+      {typeof aiConfidence === 'number' ? (
+        <div className="mb-4 rounded-xl border border-border bg-card p-3 text-xs text-muted-foreground space-y-1.5">
+          <p><span className="font-semibold text-foreground">AI confidence:</span> {toPercent(aiConfidence)}</p>
+          {typeof surveyConfidence === 'number' ? (
+            <p><span className="font-semibold text-foreground">Survey confidence:</span> {toPercent(surveyConfidence)}</p>
+          ) : null}
+          <p><span className="font-semibold text-foreground">Weighted confidence (2:1 image:survey):</span> {toPercent(adjustedConfidence ?? aiConfidence)}</p>
+          {confidenceAgreement ? (
+            <p>
+              <span className="font-semibold text-foreground">Survey agreement:</span>{' '}
+              {confidenceAgreement === 'match' ? 'Matched image findings' : confidenceAgreement === 'mismatch' ? 'Did not match image findings' : 'Partially matched'}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
 
       {result === 'at_risk' && (
         <div className="space-y-3">
