@@ -45,7 +45,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Create deterministic group-aware frozen split.")
     parser.add_argument("--input_csv", required=True, type=Path)
     parser.add_argument("--output_dir", required=True, type=Path)
-    parser.add_argument("--split_name", default="split_v1")
+    parser.add_argument("--split_name", default="split_v2")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--train_size", type=float, default=0.7)
     parser.add_argument("--val_size", type=float, default=0.15)
@@ -88,9 +88,9 @@ def main() -> None:
             "test": args.test_size,
         },
         "paths": {
-            "train": str(train_path),
-            "val": str(val_path),
-            "test": str(test_path),
+            "train": train_path.as_posix(),
+            "val": val_path.as_posix(),
+            "test": test_path.as_posix(),
         },
         "row_counts": {
             "train": len(train_df),

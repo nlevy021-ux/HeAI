@@ -57,11 +57,18 @@ LABEL_NORMALIZATION: Dict[str, Dict[str, str]] = {
         "clinic_visit": "needs_evaluation",
         "doctor_review": "needs_evaluation",
         "needs_evaluation": "needs_evaluation",
+        "emergency_care": "needs_evaluation",
         "observe": "home_care",
         "self_care": "home_care",
         "routine": "home_care",
     },
 }
+
+# After normalization, only these healing values are accepted for the master table.
+VALID_HEALING_STATUS = {"healed", "not_healed"}
+
+# Only these label columns must be non-empty / non-placeholder; optional detail columns may be blank.
+CORE_UNCERTAINTY_COLUMNS: List[str] = ["healing_status", "infection_risk"]
 
 
 def _canonicalize_string(value: object) -> str:
@@ -111,9 +118,9 @@ def _derive_binary_labels(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def _flag_uncertain(df: pd.DataFrame) -> pd.Series:
+def _flag_uncertain_core(df: pd.DataFrame) -> pd.Series:
     uncertain_mask = pd.Series(False, index=df.index)
-    for column in STRING_COLUMNS:
+    for column in CORE_UNCERTAINTY_COLUMNS:
         uncertain_mask = uncertain_mask | df[column].isin(UNCERTAIN_VALUES)
     return uncertain_mask
 
@@ -150,10 +157,11 @@ def main() -> None:
     df = _normalize_columns(df)
     df = _derive_binary_labels(df)
 
-    uncertain_mask = _flag_uncertain(df)
-    unknown_binary_mask = df["infection_risk_binary"].isna() | df["urgency_binary"].isna()
+    uncertain_core_mask = _flag_uncertain_core(df)
+    invalid_healing_mask = ~df["healing_status"].isin(VALID_HEALING_STATUS)
+    unknown_infection_mask = df["infection_risk_binary"].isna()
     invalid_core_mask = df["image_path"].isna() | df["image_id"].isna()
-    exclude_mask = uncertain_mask | unknown_binary_mask | invalid_core_mask
+    exclude_mask = uncertain_core_mask | invalid_healing_mask | unknown_infection_mask | invalid_core_mask
 
     excluded = df[exclude_mask].copy()
     cleaned = df[~exclude_mask].copy()

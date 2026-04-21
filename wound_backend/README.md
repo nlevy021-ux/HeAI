@@ -5,11 +5,18 @@ Backend-first wound assessment pipeline starter for Sprint 1.
 ## Scope in this milestone
 
 - Build a cleaned master label table.
-- Create a frozen split (`split_v1`) with group-aware splitting.
+- Create a frozen split (`split_v2`) with group-aware splitting.
 - Train an image-only EfficientNet-B1 baseline for:
   - `healing_status`
   - `infection_risk_binary`
 - Evaluate with macro-F1, weighted-F1, per-class metrics, confusion matrix, and elevated-class recall.
+
+## Checkpoint links
+
+- Repo: [https://github.com/nlevy021-ux/HeAI](https://github.com/nlevy021-ux/HeAI)
+- Latest healing checkpoint (`split_v2`): [healing_status_efficientnet_b1_split_v2_2026-04-13.pt](https://github.com/nlevy021-ux/HeAI/blob/master/wound_backend/outputs/checkpoints/healing_status_efficientnet_b1_split_v2_2026-04-13.pt)
+- Latest infection-risk checkpoint (`split_v2`): [infection_risk_binary_efficientnet_b1_split_v2_2026-04-13.pt](https://github.com/nlevy021-ux/HeAI/blob/master/wound_backend/outputs/checkpoints/infection_risk_binary_efficientnet_b1_split_v2_2026-04-13.pt)
+- Previous model versions are retained; these are additive versioned files.
 
 ## Directory layout
 
@@ -42,10 +49,12 @@ Derived columns added by build script:
 
 ```bash
 python src/data/build_master_table.py ^
-  --input_csv data/raw/raw_labels.csv ^
+  --input_csv data/raw/labels_raw.csv ^
   --output_csv data/processed/master_labels.csv ^
   --excluded_csv data/metadata/excluded_uncertain_labels.csv
 ```
+
+Master rows require only valid `healing_status`, `infection_risk`, `image_id`, and `image_path`. Optional columns (`body_location`, `closure_method`, etc.) may be blank; `urgency_binary` may be missing when urgency was not annotated.
 
 2. Generate frozen split:
 
@@ -53,15 +62,17 @@ python src/data/build_master_table.py ^
 python src/data/make_splits.py ^
   --input_csv data/processed/master_labels.csv ^
   --output_dir data/splits ^
-  --split_name split_v1
+  --split_name split_v2
 ```
+
+Split manifests store paths with forward slashes for cross-platform use. Run training from the repo root (`HeAI`) so manifest paths resolve.
 
 3. Train healing status:
 
 ```bash
 python src/training/train_classifier.py ^
   --config configs/baseline/healing_status.yaml ^
-  --split_manifest data/splits/split_v1_manifest.json ^
+  --split_manifest data/splits/split_v2_manifest.json ^
   --task healing_status ^
   --output_dir outputs
 ```
@@ -71,7 +82,7 @@ python src/training/train_classifier.py ^
 ```bash
 python src/training/train_classifier.py ^
   --config configs/baseline/infection_risk_binary.yaml ^
-  --split_manifest data/splits/split_v1_manifest.json ^
+  --split_manifest data/splits/split_v2_manifest.json ^
   --task infection_risk_binary ^
   --output_dir outputs
 ```

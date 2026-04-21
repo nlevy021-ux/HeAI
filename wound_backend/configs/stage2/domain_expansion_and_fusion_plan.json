@@ -1,0 +1,60 @@
+{
+  "name": "stage2_domain_expansion_and_fusion",
+  "objective": "Improve elevated-risk recall and deployment robustness by combining image features with Stage 1 signals and body location.",
+  "phase_after_sprint2_heads": [
+    "healing_status",
+    "erythema",
+    "edema"
+  ],
+  "domain_expansion_plan": {
+    "data_sources": [
+      "deployment-like clinic photos",
+      "phone-captured home photos",
+      "diverse body-location examples",
+      "diverse skin-tone and lighting conditions"
+    ],
+    "labeling": {
+      "required_fields": [
+        "infection_risk_binary",
+        "urgency_binary",
+        "body_location",
+        "erythema",
+        "edema",
+        "healing_status"
+      ],
+      "quality_controls": [
+        "dual review on elevated-risk cases",
+        "adjudication for disagreements",
+        "flag uncertain labels and exclude from first-pass benchmark"
+      ]
+    },
+    "evaluation_guardrails": [
+      "track elevated recall as primary safety metric",
+      "track false negative count and review images",
+      "report subgroup metrics by body_location and source domain"
+    ]
+  },
+  "stage2_fusion_model_v1": {
+    "inputs": [
+      "image_embedding",
+      "body_location_one_hot",
+      "stage1_healing_status_probs",
+      "stage1_erythema_probs",
+      "stage1_edema_probs"
+    ],
+    "architecture": "concatenate -> small MLP -> two binary heads (infection_risk_binary, urgency_binary)",
+    "training_notes": [
+      "retain fixed split policy for benchmark comparability",
+      "use class weighting or focal loss if elevated recall is low",
+      "tune elevated decision threshold on validation set"
+    ]
+  },
+  "release_policy": {
+    "inference_output_requirements": [
+      "return both class probabilities",
+      "return threshold-based decision label",
+      "return uncertain flag when probability is near threshold"
+    ],
+    "safety_rule": "if confidence is low or uncertain band is hit, escalate to watch/clinical evaluation rather than benign output"
+  }
+}
